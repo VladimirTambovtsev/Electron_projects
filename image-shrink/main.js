@@ -1,4 +1,4 @@
-const {app, BrowserWindow, Menu, globalShortcut} = require('electron')
+const {app, BrowserWindow, Menu, globalShortcut, ipcMain} = require('electron')
 
 process.env.NODE_ENV = 'development'
 
@@ -110,3 +110,7 @@ app.on('window-all-closed', () => {
 })
 
 app.allowRendererProcessReuse = true
+
+ipcMain.on('image:minimize', (e, options) => {
+  console.log(options)
+})
