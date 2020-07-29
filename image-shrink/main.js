@@ -29,7 +29,22 @@ const menu = [
         click: () => app.quit()
       }
     ]
-  }
+  },
+  ...(isDev
+    ? [
+        {
+          label: 'Developer',
+          submenu: [
+            {
+              role: 'reload',
+              role: 'forcereload',
+              role: 'separator',
+              role: 'toggledevtools'
+            }
+          ]
+        }
+      ]
+    : [])
 ]
 
 app.on('ready', () => {
