@@ -14,7 +14,10 @@ const createMainWindow = () => {
     widht: 500,
     height: 600,
     icon: './static/assets/Icon_256x256.png',
-    resizable: isDev
+    resizable: isDev,
+    webPreferences: {
+      nodeIntegration: true
+    }
   })
 
   window.loadURL(`file://${__dirname}/static/index.html`)
