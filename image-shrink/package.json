@@ -1,0 +1,15 @@
+{
+  "name": "image-shrink",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "nodemon --exec electron ."
+  },
+  "author": "Vladimir Tambovtsev",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^9.1.2",
+    "nodemon": "^2.0.4"
+  }
+}
