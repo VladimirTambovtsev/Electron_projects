@@ -3,10 +3,12 @@ const {app, BrowserWindow, Menu, globalShortcut} = require('electron')
 process.env.NODE_ENV = 'development'
 
 let window
+let aboutWindow
 const isDev = process.env.NODE_ENV === 'development' ? true : false
 const isMac = process.platform === 'darwin' ? true : false
+const isWindows = process.platform === 'win32' ? true : false
 
-const main = () => {
+const createMainWindow = () => {
   window = new BrowserWindow({
     title: 'App Shrink',
     widht: 500,
@@ -18,8 +20,39 @@ const main = () => {
   window.loadURL(`file://${__dirname}/static/index.html`)
 }
 
+const createAboutWindow = () => {
+  aboutWindow = new BrowserWindow({
+    title: 'About',
+    widht: 300,
+    height: 300,
+    icon: './static/assets/Icon_256x256.png',
+    resizable: false,
+    backgroundColor: 'white'
+  })
+
+  aboutWindow.loadURL(`file://${__dirname}/static/about.html`)
+}
+
 const menu = [
-  ...(isMac ? [{role: 'appMenu'}] : []),
+  ...(isMac
+    ? [
+        {
+          role: app.menu,
+          submenu: [
+            {
+              label: 'About',
+              click: () => createAboutWindow()
+            }
+          ]
+        }
+      ]
+    : []),
+  ...(isWindows
+    ? {
+        label: 'Help',
+        submenu: [{label: 'About', click: createAboutWindow()}]
+      }
+    : []),
   {
     label: 'File',
     submenu: [
@@ -48,7 +81,7 @@ const menu = [
 ]
 
 app.on('ready', () => {
-  main()
+  createMainWindow()
 
   const mainMenu = Menu.buildFromTemplate(menu)
   Menu.setApplicationMenu(mainMenu)
@@ -68,7 +101,7 @@ app.on('window-all-closed', () => {
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
-      main()
+      createMainWindow()
     }
   })
 })
