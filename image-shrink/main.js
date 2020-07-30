@@ -27,7 +27,7 @@ const createMainWindow = () => {
     title: 'App Shrink',
     widht: 500,
     height: 600,
-    icon: './static/assets/Icon_256x256.png',
+    // icon: './static/assets/Icon_256x256.png',
     resizable: isDev,
     webPreferences: {
       nodeIntegration: true
@@ -42,7 +42,7 @@ const createAboutWindow = () => {
     title: 'About',
     widht: 300,
     height: 300,
-    icon: './static/assets/Icon_256x256.png',
+    // icon: './static/assets/Icon_256x256.png',
     resizable: false,
     backgroundColor: 'white'
   })
