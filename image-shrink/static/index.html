@@ -69,6 +69,13 @@
       })
       console.log(imgPath, quality)
     })
+
+    // On done
+    ipcRenderer.on('image:done', () => {
+      M.toast({
+        html: `Image resized to ${slider.value}% quality`
+      })
+    })
   </script>
 </body>
 

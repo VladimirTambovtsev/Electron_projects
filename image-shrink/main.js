@@ -1,4 +1,17 @@
-const {app, BrowserWindow, Menu, globalShortcut, ipcMain} = require('electron')
+const path = require('path')
+const os = require('os')
+const {
+  app,
+  BrowserWindow,
+  Menu,
+  globalShortcut,
+  ipcMain,
+  shell
+} = require('electron')
+const imagemin = require('imagemin')
+const imageminMozjpeg = require('imagemin-mozjpeg')
+const imageminPngquant = require('imagemin-pngquant')
+const slash = require('slash')
 
 process.env.NODE_ENV = 'development'
 
@@ -112,5 +125,29 @@ app.on('window-all-closed', () => {
 app.allowRendererProcessReuse = true
 
 ipcMain.on('image:minimize', (e, options) => {
+  options.dest = path.join(os.homedir(), 'imageshrink')
+  shrinkImage(options)
   console.log(options)
 })
+
+async function shrinkImage({imgPath, quality, dest}) {
+  try {
+    const pngQuality = quality / 100
+
+    const files = await imagemin([slash(imgPath)], {
+      destination: dest,
+      plugins: [
+        imageminMozjpeg({quality}),
+        imageminPngquant({quality: [pngQuality, pngQuality]})
+      ]
+    })
+
+    console.log(files)
+
+    shell.openPath(dest)
+
+    window.webContents.send('image:done')
+  } catch (error) {
+    console.error(error)
+  }
+}
